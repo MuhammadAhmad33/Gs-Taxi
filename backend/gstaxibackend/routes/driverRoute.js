@@ -9,5 +9,5 @@ router.post('/update-location', driverController.updateLocation);
 router.post('/find-drivers', driverController.findDrivers);
 router.post('/ride-requests', driverController.createRideRequest);
 router.post('/ride-requests/accept/:rideRequestId/:driverId', driverController.acceptRideRequest);
-
+router.get('/getdriver/:driverId ', driverController.getDriverById)
 module.exports = router;

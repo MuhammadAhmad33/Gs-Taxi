@@ -29,6 +29,22 @@ async function createDriver(req, res) {
         res.status(500).json({ error: 'Failed to create driver' });
     }
 }
+async function getDriverById(req, res) {
+    const { driverId } = req.params;
+
+    try {
+        const driver = await Driver.findById(driverId);
+
+        if (!driver) {
+            return res.status(404).json({ message: 'Driver not found' });
+        }
+
+        res.status(200).json({ driver });
+    } catch (error) {
+        console.error('Failed to fetch driver:', error);
+        res.status(500).json({ error: 'Failed to fetch driver' });
+    }
+}
 
 
 async function saveDriverLicense(req, res) {
@@ -122,7 +138,7 @@ async function findDrivers(req, res) {
 };
 
 
-async function createRideRequest (req, res){
+async function createRideRequest(req, res) {
     const { srcLatitude, srcLongitude, destLatitude, destLongitude, radius } = req.body;
     try {
         const rideRequest = new RideRequest({
@@ -155,7 +171,7 @@ async function createRideRequest (req, res){
     }
 };
 
-async function acceptRideRequest (req, res) {
+async function acceptRideRequest(req, res) {
     const { rideRequestId, driverId } = req.params;
     try {
         const rideRequest = await RideRequest.findById(rideRequestId);
@@ -191,7 +207,6 @@ function notifyOtherDrivers(rideRequestId) {
     console.log(`Notifying other drivers that ride request ${rideRequestId} has been accepted`);
 }
 
-//
 
 
 module.exports = {
@@ -201,5 +216,6 @@ module.exports = {
     updateLocation,
     findDrivers,
     createRideRequest,
-    acceptRideRequest
+    acceptRideRequest,
+    getDriverById
 };
