@@ -61,7 +61,7 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip /home/runner/work/Gs-Taxi/Gs-Taxi/node-app/release.zip -d ./unzipped
+        run: unzip /home/runner/work/Gs-Taxi/Gs-Taxi/release.zip -d ./unzipped
 
       - name: List unzipped files
         run: ls -al ./unzipped
