@@ -61,7 +61,10 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip node-app/release.zip
+        run: unzip /home/runner/work/Gs-Taxi/Gs-Taxi/node-app/release.zip -d ./unzipped
+
+      - name: List unzipped files
+        run: ls -al ./unzipped
 
       - name: Login to Azure
         uses: azure/login@v1
@@ -77,4 +80,4 @@ jobs:
         with:
           app-name: 'GSTaxi'
           slot-name: 'Production'
-          package: .
+          package: ./unzipped
