@@ -30,11 +30,14 @@ jobs:
           cd backend/gstaxibackend
           zip -r ../../../release.zip .
 
-      - name: Debug - List current directory
-        run: ls -al
-
-      - name: Debug - List root directory
+      - name: Debug - List files in root directory
         run: ls -al /
+
+      - name: Debug - List files in working directory
+        run: ls -al .
+
+      - name: Debug - List files in backend/gstaxibackend directory
+        run: ls -al backend/gstaxibackend
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
