@@ -20,17 +20,15 @@ jobs:
 
       - name: Install dependencies, build, and test
         run: |
-          cd backend
+          cd backend/gstaxibackend
           npm install
           npm run build --if-present
           npm run test --if-present
-        working-directory: ./backend
 
       - name: Zip artifact for deployment
         run: |
-          cd backend
-          zip -r ../release.zip .
-        working-directory: ./backend
+          cd backend/gstaxibackend
+          zip -r ../../../release.zip .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -45,7 +43,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
@@ -59,9 +57,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9AE1711DA40D46E28DFC96C0B540F4FD }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1DA0B5D7E0C34428822592F4784DE232 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3D7D3980F0ED40748728A59A43636A54 }}
           client-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}
 
       - name: Deploy to Azure Web App
