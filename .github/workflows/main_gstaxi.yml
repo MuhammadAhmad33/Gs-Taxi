@@ -28,13 +28,19 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           cd backend/gstaxibackend
-          zip -r ../../../release.zip .
+          zip -r ../../release.zip .
+
+      - name: Debug - List current directory
+        run: ls -al
+
+      - name: Debug - List release.zip directory
+        run: ls -al ../../release.zip
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: release.zip
+          path: backend/release.zip
 
   deploy:
     runs-on: ubuntu-latest
