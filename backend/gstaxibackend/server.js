@@ -29,7 +29,7 @@ mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: t
     .catch(err => console.error(err));
 
 // Start the server
-const PORT = 3000;
+const port = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
