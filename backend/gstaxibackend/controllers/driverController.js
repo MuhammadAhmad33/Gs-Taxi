@@ -4,18 +4,17 @@ const Vehicle = require('../models/vehicle');
 const RideRequest = require('../models/rideRequest');
 const { generateToken } = require('../utils/jwt');
 
-
 async function createDriver(req, res) {
     const { name, email, city, image } = req.body;
-    console.log(req.body);
 
     try {
-        // Create a new driver instance
+        // Create a new driver instance with initial location data
         const driver = new Driver({
             name,
             email,
             city,
-            image
+            image,
+            location: { type: 'Point', coordinates: [0, 0] } // Default to (0, 0) coordinates
         });
 
         // Save the driver to the database
@@ -29,6 +28,7 @@ async function createDriver(req, res) {
         res.status(500).json({ error: 'Failed to create driver' });
     }
 }
+
 async function getDriverById(req, res) {
     const { driverId } = req.params;
 
