@@ -40,7 +40,7 @@ jobs:
         run: ls -al backend/gstaxibackend
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: node-app
           path: release.zip
@@ -56,12 +56,13 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: node-app
+          path: .
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip node-app/release.zip
 
       - name: Login to Azure
         uses: azure/login@v1
@@ -72,7 +73,6 @@ jobs:
           client-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'GSTaxi'
