@@ -33,28 +33,30 @@ async function loginUser(req, res) {
     }
 }
 
-
 async function verifyCode(req, res) {
     const { code, id } = req.body;
+    console.log(req.body);
 
     try {
-        // Find the user with the provided user ID and verification code
-        const user = await loginSchema.findOne({
-            _id: id,
-            verificationCode: code
-        });
-        console.log(user)
+        // Find the user with the provided user ID
+        const user = await UserSignup.findById(id);
+        console.log(user);
 
-        // If no user found or verification code expired, return error
+        // If no user found, return error
         if (!user) {
-            console.log('issue')
-            return res.status(400).json({ error: 'Invalid verification code' });
+            return res.status(400).json({ error: 'User not found' });
+        }
+
+        // Check if the verification code matches and is not expired
+        if (user.verificationCode !== code) {
+            return res.status(400).json({ error: 'Invalid code' });
         }
 
         // Update user verification status to true
         user.isVerified = true;
         await user.save();
-        console.log(user)
+        console.log(user);
+
         // Respond to the client
         res.status(200).json({ user, message: 'Verification code verified successfully' });
     } catch (error) {
@@ -62,6 +64,7 @@ async function verifyCode(req, res) {
         res.status(500).json({ error: 'Failed to verify verification code' });
     }
 }
+
 
 
 async function signupUser(req, res) {

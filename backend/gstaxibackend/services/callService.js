@@ -10,7 +10,6 @@ const voice = africasTalking.VOICE;
 
 async function makeCall(callTo, callFrom) {
     try {
-        console.log('inside');
         const response = await voice.call({
             to: callTo,
             from: callFrom
