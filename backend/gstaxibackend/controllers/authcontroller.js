@@ -1,5 +1,5 @@
 const smsService = require('../services/smsService');
-const loginSchema = require('../models/login');
+const UserLogin = require('../models/login');
 const UserSignup = require('../models/signup');
 const { generateToken } = require('../utils/jwt');
 const signup = require('../models/signup');
@@ -66,6 +66,38 @@ async function verifyCode(req, res) {
 }
 
 
+async function verifyCodeLogin(req, res) {
+    const { code, id } = req.body;
+    console.log(req.body);
+
+    try {
+        // Find the user with the provided user ID
+        const user = await UserLogin.findById({ _id: id });
+        console.log(user);
+
+        // If no user found, return error
+        if (!user) {
+            return res.status(400).json({ error: 'User not found' });
+        }
+
+        // Check if the verification code matches and is not expired
+        if (user.verificationCode !== code) {
+            return res.status(400).json({ error: 'Invalid code' });
+        }
+
+        // Update user verification status to true
+        user.isVerified = true;
+        await user.save();
+        console.log(user);
+
+        // Respond to the client
+        res.status(200).json({ user, message: 'Verification code verified successfully' });
+    } catch (error) {
+        console.error('Failed to verify verification code:', error);
+        res.status(500).json({ error: 'Failed to verify verification code' });
+    }
+}
+
 
 async function signupUser(req, res) {
     const { name, email, phoneNumber } = req.body;
@@ -97,5 +129,6 @@ async function signupUser(req, res) {
 module.exports = {
     loginUser,
     verifyCode,
-    signupUser
+    signupUser,
+    verifyCodeLogin
 };
