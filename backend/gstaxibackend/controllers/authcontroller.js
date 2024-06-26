@@ -14,7 +14,7 @@ async function loginUser(req, res) {
         const verificationCodeInfo = await smsService.sendVerificationCode(phoneNumber);
 
         // Save phone number, verification code, and expiration time in the database
-        const login = new loginSchema({
+        const login = new UserLogin({
             phoneNumber: phoneNumber,
             verificationCode: verificationCodeInfo.code,
             expiresAt: verificationCodeInfo.expiresAt
