@@ -4,6 +4,7 @@ const Config = require('../config/config');
 require('dotenv').config();
 
 const stripe = Stripe(Config.stripeKey);
+
 const charge = async (req, res) => {
     try {
         const { amount, currency, paymentMethodId, callbackUrl } = req.body;
@@ -16,16 +17,15 @@ const charge = async (req, res) => {
             amount,
             currency,
             payment_method: paymentMethodId,
-            confirm: true,
-            metadata: { integration_check: 'accept_a_payment' },
+            confirm: true, // Set to true to confirm the payment immediately
             return_url: callbackUrl,
-            // Omitting receipt_email and statement_descriptor
+            metadata: { integration_check: 'accept_a_payment' },
         });
 
         console.log('Generated client secret:', paymentIntent.client_secret);
 
         res.status(200).send({
-            clientSecret: paymentIntent.client_secret,
+            paymentIntent
             // You can include any additional information you need to pass back to your frontend
             // or store for reference.
         });
@@ -35,7 +35,6 @@ const charge = async (req, res) => {
         res.status(500).send({ error: error.message });
     }
 };
-
 
 module.exports = {
     charge,
